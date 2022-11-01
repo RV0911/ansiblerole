@@ -19,7 +19,7 @@
  
  - name: Get list of instances needs to be terminated
    set_fact:
-     instancelist: "{{ec2_output.instances | map(attribute='instance_id') | list }}"
+     instancelist: "{{ec2_output.instances | map(attribute='id') | join(',') }}"
 
  - name: create a cloudformation stack
    cloudformation:
