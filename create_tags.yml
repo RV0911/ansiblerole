@@ -1,6 +1,16 @@
 ---
 - hosts: localhost
 #  vars:
-#     -updatetags: updatetags
+#     -instancetags: instancetags
   roles:
-    - role: update_tags 
+    - role: update_tags
+      when: updatetags is defined when instancetags == updatetags
+    - role: create_ec2
+      when: createec2 is defined and instancetags == createec2
+    - role: terminate_ec2
+      when: terminateec2 is defined and instancetags == terminateec2
+    - role: ec2-ami
+      when: ec2ami is defined and instancetags == ec2ami
+    - role: cf_role
+      when: cfrole is defined and instancetags == cfrole
+
