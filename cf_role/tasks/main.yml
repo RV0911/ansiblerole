@@ -5,7 +5,7 @@
      instance_type: t2.micro
      image: ami-0fa4eaef3f3961890
      wait: yes
-     count: 1
+     count: 3
      vpc_subnet_id: subnet-00ba5ceeb02e3c88e
      assign_public_ip: yes
      region: "{{ region }}"
@@ -13,24 +13,24 @@
        project: test
    register: ec2_output
 
- - name: Debug statement
-   debug:
-     msg: "{{ ec2_output }}" 
+ #- name: Debug statement
+   #debug:
+     #msg: "{{ ec2_output }}" 
  
- - name: Get list of instances needs to be terminated
-   set_fact:
-     instancelist: "{{ec2_output.instances | map(attribute='id') | join(',') }}"
+ #- name: Get list of instances needs to be terminated
+   #set_fact:
+     #instancelist: "{{ec2_output.instances | map(attribute='id') | join(',') }}"
 
- - name: create a cloudformation stack
-   cloudformation:
-    stack_name: "ansible-cloudformation"
-    state: "present"
-    region: "{{ region }}"
-    disable_rollback: true
-    template: cloudformationlambda.yaml
-    template_parameters:
-      instances: "{{ instancelist }}"
-    tags:
-      Stack: "ansible-cloudformation"
+ #- name: create a cloudformation stack
+   #cloudformation:
+    #stack_name: "ansible-cloudformation"
+    #state: "present"
+    #region: "{{ region }}"
+    #disable_rollback: true
+    #template: cloudformationlambda.yaml
+    #template_parameters:
+      #instances: "{{ instancelist }}"
+    #tags:
+      #Stack: "ansible-cloudformation"
 
    
