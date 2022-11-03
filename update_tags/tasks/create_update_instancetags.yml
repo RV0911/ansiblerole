@@ -1,0 +1,25 @@
+---
+ - name: gather instance facts
+   ec2_instance_info:
+     region: "{{ usregion }}"
+   register: ec2_output
+
+ - name: Debug statement
+   debug:
+     msg: "{{ ec2_output }}"
+ 
+ - name: get instance list to add tags
+   set_fact:
+     instancelist: "{{ec2_output.instances | map(attribute='instance_id') | list }}"
+
+ - name: Ensure insdtance tags are present on a resource
+   ec2_tag:
+    region: "{{ usregion }}"
+    resource: "{{ item }}"
+    state: present
+    tags:
+      project: infra
+      env: dev
+    #aws_access_key: "{{ accesskey }}"
+    #aws_secret_key: "{{ secretkey }}"
+   with_items: "{{ instancelist }}"

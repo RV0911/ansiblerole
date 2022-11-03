@@ -1,0 +1,28 @@
+---
+ - name: gather instance facts
+   ec2_ami_info:
+     region: "{{ usregion }}"
+     filters:
+        "tag:test": role
+   register: ami_output
+
+
+ - name: Debug statement
+   debug:
+     msg: "{{ ami_output }}"
+ 
+ - name: get instance list to add tags
+   set_fact:
+     instancelist: "{{ami_output.images | map(attribute='image_id') | list }}"
+
+ - name: Ensure ami tags are present on a resource
+   ec2_tag:
+    region: "{{ usregion }}"
+    resource: "{{ item }}"
+    state: present
+    tags:
+      project: infra
+      env: dev
+    #aws_access_key: "{{ accesskey }}"
+    #aws_secret_key: "{{ secretkey }}"
+   with_items: "{{ instancelist }}"

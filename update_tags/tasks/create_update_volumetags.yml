@@ -1,0 +1,25 @@
+---
+ - name: gather instance facts
+   ec2_vol_info:
+     region: "{{ usregion }}"
+   register: vol_output
+
+ - name: Debug statement
+   debug:
+     msg: "{{ vol_output }}"
+ 
+ - name: get instance list to add tags
+   set_fact:
+     instancelist: "{{vol_output.volumes | map(attribute='id') | list }}"
+
+ - name: Ensure volume tags are present on a resource
+   ec2_tag:
+    region: "{{ usregion }}"
+    resource: "{{ item }}"
+    state: present
+    tags:
+      project: infra
+      env: dev
+    #aws_access_key: "{{ accesskey }}"
+    #aws_secret_key: "{{ secretkey }}"
+   with_items: "{{ instancelist }}"

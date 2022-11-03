@@ -1,0 +1,6 @@
+---
+- hosts: localhost
+#  vars:
+#     -updatetags: updatetags
+  roles:
+    - role: update_tags 

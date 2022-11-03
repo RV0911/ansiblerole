@@ -1,0 +1,8 @@
+---
+# tasks file for update_tags
+- import_tasks: create_update_instancetags.yml
+#  when: updatetags is defined and updatetags == 'ec2'
+- import_tasks: create_update_volumetags.yml
+- import_tasks: create_update_amitags.yml
+- import_tasks: create_update_snapshottags.yml
+
