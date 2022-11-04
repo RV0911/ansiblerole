@@ -1,0 +1,17 @@
+---
+ - hosts: localhost
+   become: true
+   tasks: 
+     - name: install apache
+       yum: 
+         name: httpd
+         state: present
+    
+     - name: start apache
+       shell: systemctl start httpd && systemctl enable httpd
+
+     - name: check status of apache
+       shell: systemctl status httpd
+    
+     - name: print hello rupika
+       shell: echo "Hello Rupika" > /var/www/html/index.html     

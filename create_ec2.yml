@@ -1,11 +1,15 @@
 ---
-- hosts: localhost
-  vars: 
-    - terminateec2: terminateec2
-  roles:
-    - role: create_ec2
-      when: createec2 is defined and createec2 == ec2instance
-    - role: terminate_ec2
-      when: terminateec2 is defined and terminateec2 == ec2terminate
-
-
+ - hosts: localhost
+   tasks: 
+     - name: create an ec2
+       ec2: 
+          key_name: xxxx
+          instance_type: t2.micro
+          image: ami-090fa75af13c156b4
+          wait: yes
+          count: 1
+          vpc_subnet_id: subnet-0206eada78b2d261f
+          assign_public_ip: yes
+          region: us-east-1
+          aws_access_key: xxxx
+          aws_secret_key: xxxx
